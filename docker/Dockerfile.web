@@ -1,0 +1,18 @@
+FROM oven/bun:1
+
+WORKDIR /usr/src/app
+
+ARG DATABASE_URL
+COPY ./package.json ./package.json
+COPY ./bun.lock ./bun.lock
+COPY ./turbo.json ./turbo.json
+
+COPY ./packages ./packages
+
+COPY ./apps/web ./apps/web
+
+RUN bun install
+RUN bun run db:generate
+RUN DATABASE_URL=${DATABASE_URL} cd apps/web && bun run build && cd ../..
+
+CMD ["bun", "run", "start:web"]
