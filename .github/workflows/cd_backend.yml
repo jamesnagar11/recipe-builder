@@ -20,7 +20,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./docker/Dockerfile.Backend
+          file: ./docker/Dockerfile.backend
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/backend-recipe:${{ github.sha }}
 
