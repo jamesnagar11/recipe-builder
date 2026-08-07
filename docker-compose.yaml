@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: db
+    restart: always
+    volumes: 
+      - dbdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=secretpassword
+    ports:
+      - "5432:5432"
+    networks:
+      - user_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile.backend
+
+    container_name: "backend-recipe"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+
+    ports:
+      - "9001:8080"
+    networks:
+      - user_network
+    environment:
+      - DATABASE_URL=postgresql://postgres:secretpassword@db:5432/postgres
+    
+  frontend:
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile.web
+      args:
+        - DATABASE_URL=postgresql://postgres:secretpassword@db:5432/postgres
+    container_name: "web-recipe"
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    networks:
+      - user_network
+    environment:
+      - DATABASE_URL=postgresql://postgres:secretpassword@db:5432/postgres
+
+volumes:
+  dbdata:
+
+networks:
+  user_network:
