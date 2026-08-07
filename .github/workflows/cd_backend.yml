@@ -1,0 +1,44 @@
+name: Deploy Backend of Recipe Builder
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
+      - name: Docker login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      
+      - name: Build and Push image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./docker/Dockerfile.Backend
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/backend-recipe:${{ github.sha }}
+
+      # - name: Deploy to Virtual Machine
+      #   run: |
+      #     echo "${{secrets.}}"
+
+
+
+
+
+      
+      # - name: Deploy to remote server using SSH
+      #   uses: appleboy/ssh-action@v1.0.3
+      #   with:
+      #     host: ${{ secrets.SERVER_IP }}
+      #     username: ${{ secrets.SERVER_USERNAME }}
+      #     key: ${{ secrets.SERVER_SSH_KEY }}
+      #     port: 22
+      #     script: |
+      #       cd /opt/recipe-builder/backend
