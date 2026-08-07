@@ -32,4 +32,4 @@ jobs:
         run: |
           echo "$SSH_KEY" > ~/ssh_key
           chmod 600 ~/ssh_key
-          ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@16.16.90.246 "sudo docker stop backend-recipe || true; sudo docker rm backend-recipe || true; sudo docker run -d -p 9001:8080 --name backend-recipe ${{ secrets.DOCKER_USERNAME }}/backend-recipe:${{ github.sha }}"
+          ssh -o StrictHostKeyChecking=no -i ~/ssh_key ubuntu@16.16.90.246 "echo '${{ secrets.DOCKER_TOKEN }}' | sudo docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin; sudo docker stop backend-recipe || true; sudo docker rm backend-recipe || true; sudo docker run -d -p 9001:8080 --name backend-recipe ${{ secrets.DOCKER_USERNAME }}/backend-recipe:${{ github.sha }}"
