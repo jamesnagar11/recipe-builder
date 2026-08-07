@@ -27,7 +27,7 @@ jobs:
             DATABASE_URL=${{ secrets.DATABASE_URL }}
       
       - name: Deploy to Virtual Machine
-        run: |
+      - run: |
           echo "${{secrets.SSH_PRIVATE_KEY}}" &> ~/ssh_key
           mkdir -p /home/runner/.ssh
           touch /home/runner/.ssh/known_hosts
