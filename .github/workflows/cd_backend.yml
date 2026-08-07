@@ -23,6 +23,9 @@ jobs:
           file: ./docker/Dockerfile.backend
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/backend-recipe:${{ github.sha }}
+          build-args:
+            - DATABASE_URL=${{secrets.DATABASE_URL}}
+          
 
       # - name: Deploy to Virtual Machine
       #   run: |

@@ -13,6 +13,6 @@ COPY ./apps/web ./apps/web
 
 RUN bun install
 RUN bun run db:generate
-RUN DATABASE_URL=${DATABASE_URL} cd apps/web && bun run build && cd ../..
+RUN DATABASE_URL=${DATABASE_URL} cd apps/web && bun run build && cd ../..   
 
 CMD ["bun", "run", "start:web"]
