@@ -25,5 +25,12 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/backend-recipe:${{ github.sha }}
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
-
-
+      
+      - name: Deploy to Virtual Machine
+        run: |
+          echo "${{secrets.SSH_PRIVATE_KEY}}" &> ~/ssh_key
+          mkdir -p /home/runner/.ssh
+          touch /home/runner/.ssh/known_hosts
+          echo "${{secrets.KNOWN_HOSTS}}" &> /home/runner/.ssh/known_hosts
+          chmod 700 /home/runner/ssh_key
+          ssh -i ~/ssh_key ubuntu@16.16.90.246 -t "sudo docker stop backend-recipe && sudo docker run -d -p 9001:8080 --name backend-recipe ${{secrets.DOCKER_USERNAME}}/backend-recipe:${{ github.sha }}"
