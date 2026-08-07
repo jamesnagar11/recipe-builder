@@ -23,25 +23,5 @@ jobs:
           file: ./docker/Dockerfile.backend
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/backend-recipe:${{ github.sha }}
-          build-args:
-            - DATABASE_URL=${{secrets.DATABASE_URL}}
-          
-
-      # - name: Deploy to Virtual Machine
-      #   run: |
-      #     echo "${{secrets.}}"
-
-
-
-
-
-      
-      # - name: Deploy to remote server using SSH
-      #   uses: appleboy/ssh-action@v1.0.3
-      #   with:
-      #     host: ${{ secrets.SERVER_IP }}
-      #     username: ${{ secrets.SERVER_USERNAME }}
-      #     key: ${{ secrets.SERVER_SSH_KEY }}
-      #     port: 22
-      #     script: |
-      #       cd /opt/recipe-builder/backend
+          build-args: |
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
