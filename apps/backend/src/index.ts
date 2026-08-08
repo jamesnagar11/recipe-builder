@@ -7,7 +7,7 @@ const PORT = 8080;
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send('Welcome to Recipe Builder');
+    res.send('Welcome to home page of Recipe Builder Backend');
 });
 
 app.get('/health', (req, res) => {
