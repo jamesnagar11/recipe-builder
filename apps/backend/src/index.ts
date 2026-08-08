@@ -10,6 +10,10 @@ app.get('/', (req, res) => {
     res.send('Welcome to Recipe Builder');
 });
 
+app.get('/health', (req, res) => {
+  res.send('Healthy');
+})
+
 app.get('/users', async(req, res) => {
   try {
     const users = await prisma.user.findMany();
