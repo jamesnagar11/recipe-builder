@@ -7,7 +7,7 @@ const PORT = 8080;
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Welcome to Recipe Builder');
 });
 
 app.get('/users', async(req, res) => {
